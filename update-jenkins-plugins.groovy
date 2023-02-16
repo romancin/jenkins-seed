@@ -37,18 +37,18 @@ pipeline {
           script {
               archiveArtifacts "scripts/plugins_list_*_${DATETIME}.txt"
               if (!(pluginsToReviewManually.isEmpty())) {
-                withVault([configuration: configuration, vaultSecrets: secrets]) {
+                withVault([vaultSecrets: secrets]) {
                   discordSend description: "[Jenkins Management] - IMPORTANT!!! The following plugins need to get reviewed and updated manually: ${pluginsToReviewManually}", footer: "", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK}"
                 }
               } else if (!(pluginsDeprecated.isEmpty())) {
-                withVault([configuration: configuration, vaultSecrets: secrets]) {
+                withVault([vaultSecrets: secrets]) {
                   discordSend description: "[Jenkins Management] - IMPORTANT!!! The following plugins are deprecated and need to be deleted: ${pluginsDeprecated}", footer: "", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK}"
                 }
               }
           }
         }
         failure {
-          withVault([configuration: configuration, vaultSecrets: secrets]) {
+          withVault([vaultSecrets: secrets]) {
             discordSend description: "[Jenkins Management] - Management Task Update Jenkins Plugins failed!", footer: "", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK}"
           }
         }
