@@ -21,9 +21,9 @@ pipeline {
             steps {
                 script {
                     def safePluginUpdateModule = load("scripts/jenkins-plugins-uptodate.groovy")
-                    safePluginUpdateModule.list_jenkins_plugins("${WORKSPACE}/admin-jobs/Update-Jenkins-Plugins", "plugins_list_BEFORE-UPDATE_${DATETIME}.txt")
+                    safePluginUpdateModule.list_jenkins_plugins("${WORKSPACE}/jenkins_auto_update_plugins", "plugins_list_BEFORE-UPDATE_${DATETIME}.txt")
                     (pluginsToReviewManually, pluginsDeprecated) = safePluginUpdateModule.jenkins_safe_plugins_update()
-                    safePluginUpdateModule.list_jenkins_plugins("${WORKSPACE}/admin-jobs/Update-Jenkins-Plugins", "plugins_list_AFTER-UPDATE_${DATETIME}.txt")
+                    safePluginUpdateModule.list_jenkins_plugins("${WORKSPACE}/jenkins_auto_update_plugins", "plugins_list_AFTER-UPDATE_${DATETIME}.txt")
                 }
             }
         }
