@@ -37,11 +37,11 @@ pipeline {
           script {
               archiveArtifacts "scripts/plugins_list_*_${DATETIME}.txt"
               if (!(pluginsToReviewManually.isEmpty())) {
-                withCredentials([string(credentialsId: 'discord-webhook-notificaciones', variable: 'DISCORD_WEBHOOK')]) {
+                withVault([configuration: configuration, vaultSecrets: secrets]) {
                   discordSend description: "[Jenkins Management] - IMPORTANT!!! The following plugins need to get reviewed and updated manually: ${pluginsToReviewManually}", footer: "", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK}"
                 }
               } else if (!(pluginsDeprecated.isEmpty())) {
-                withCredentials([string(credentialsId: 'discord-webhook-notificaciones', variable: 'DISCORD_WEBHOOK')]) {
+                withVault([configuration: configuration, vaultSecrets: secrets]) {
                   discordSend description: "[Jenkins Management] - IMPORTANT!!! The following plugins are deprecated and need to be deleted: ${pluginsDeprecated}", footer: "", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK}"
                 }
               }
