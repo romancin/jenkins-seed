@@ -34,7 +34,7 @@ def jenkins_safe_plugins_update() {
   }
   println "Plugins to upgrade automatically: ${pluginsToUpdate}"
   println "Plugins to review and update manually: ${pluginsToReviewManually}"
-  println "Plugins depricated: ${pluginsDeprecated}"
+  println "Plugins deprecated: ${pluginsDeprecated}"
 
   long count = 0
   jenkins.model.Jenkins.instance.pluginManager.install(pluginsToUpdate, false).each { f ->
