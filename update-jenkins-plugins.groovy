@@ -31,7 +31,7 @@ pipeline {
     post {
         always {
           script {
-              archiveArtifacts "jenkins_auto_update_plugins/plugins_list_*_${DATETIME}.txt"
+              archiveArtifacts "scripts/plugins_list_*_${DATETIME}.txt"
               if (!(pluginsToReviewManually.isEmpty())) {
                 withCredentials([string(credentialsId: 'discord-webhook-notificaciones', variable: 'DISCORD_WEBHOOK')]) {
                   discordSend description: "[Jenkins Management] - IMPORTANT!!! The following plugins need to get reviewed and updated manually: ${pluginsToReviewManually}", footer: "", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK}"
