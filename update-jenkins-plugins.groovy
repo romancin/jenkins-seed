@@ -1,6 +1,10 @@
 def DATETIME = new Date().format('yyyy_MM_dd_HH_mm_ss', TimeZone.getTimeZone('Europe/Madrid'))
 def pluginsToReviewManually = []
 def pluginsDeprecated = []
+def secrets = [
+        [path: 'secret/notifications/discord', engineVersion: 2, secretValues: [
+            [envVar: 'DISCORD_WEBHOOK', vaultKey: 'webhook']]]
+    ]
 pipeline {
     agent { label 'built-in' }
     options {
@@ -44,7 +48,7 @@ pipeline {
           }
         }
         failure {
-          withCredentials([string(credentialsId: 'discord-webhook-notificaciones', variable: 'DISCORD_WEBHOOK')]) {
+          withVault([configuration: configuration, vaultSecrets: secrets]) {
             discordSend description: "[Jenkins Management] - Management Task Update Jenkins Plugins failed!", footer: "", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "${DISCORD_WEBHOOK}"
           }
         }
